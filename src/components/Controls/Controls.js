@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { convertTextToSpeech, pause, resume } from '../../Helpers/Controls';
 
 const Controls = (props) => {
     let [message, setMessage] = useState(new SpeechSynthesisUtterance());
@@ -8,10 +9,9 @@ const Controls = (props) => {
         setMessage(message);
     };
 
-    const convertTextToSpeech = (event) => {
-        event.preventDefault();
-        speechSynthesis.speak(message);
-    };
+    if (message.text.trim().length === 0) {
+        speechSynthesis.cancel();
+    }
 
     return (
         <form onChange={(event) => changeHandler(event)}>
@@ -42,11 +42,23 @@ const Controls = (props) => {
                 placeholder="Set pitch 0 to 2"
                 max="2"
             />
-            <button
-                className="form-control btn btn-md btn-success mt-2"
-                onClick={(event) => convertTextToSpeech(event)}>
-                Test
-                    </button>
+            <div className="control-buttons w-100 mt-3">
+                <button
+                    className="col-md-3 btn btn-md btn-success mt-2"
+                    onClick={(event) => convertTextToSpeech(event, message)}>
+                    Test
+            </button>
+                <button
+                    className="col-md-3 btn btn-md btn-success mt-2 ml-2"
+                    onClick={(event) => pause(event)}>
+                    Pause
+            </button>
+                <button
+                    className="col-md-3 btn btn-md btn-success mt-2 ml-2"
+                    onClick={(event) => resume(event)}>
+                    Resume
+            </button>
+            </div>
         </form>
     );
 };
