@@ -9,6 +9,7 @@ const Controls = (props) => {
         setMessage(message);
     };
 
+    // Stop speech when page reloads as initially on page load text is empty
     if (message.text.trim().length === 0) {
         speechSynthesis.cancel();
     }
